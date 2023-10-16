@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 const supertest = require('supertest');
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const app = require('../app');
 const Blog = require('../models/blog');
-const User = require('../models/user')
+const User = require('../models/user');
 const helper = require('./test_helper');
 
 const api = supertest(app);
@@ -17,29 +17,29 @@ beforeEach(async () => {
     username: 'root',
     name: 'Superuser',
     password: 'salainen',
-  }
+  };
 
   await api
     .post('/api/users')
-    .send(newUser)
+    .send(newUser);
 
   const { body } = await api
     .post('/api/login')
     .send({
       username: 'root',
-      password: 'salainen'
-    })
+      password: 'salainen',
+    });
 
-  const { id } = jwt.verify(body.token, process.env.SECRET)
+  const { id } = jwt.verify(body.token, process.env.SECRET);
 
-  const user = await User.findById(id)
+  const user = await User.findById(id);
 
   const blogObjects = helper.initialBlogs
     .map((blog) => new Blog(blog));
 
   const promiseArray = blogObjects.map(async (blog) => {
-    blog.user = user.id
-    blog.save()
+    blog.user = user.id;
+    blog.save();
   });
   await Promise.all(promiseArray);
 });
@@ -58,24 +58,23 @@ describe('when there is initially some blogs saved', () => {
   });
 
   test('a specific blog is within the returned blogs', async () => {
-    const response = await api.get('/api/blogs')
+    const response = await api.get('/api/blogs');
 
-    const titles = response.body.map(b => b.title)
+    const titles = response.body.map((b) => b.title);
 
     expect(titles).toContain(
-      'Go To Statement Considered Harmful'
-    )
-  })
-})
+      'Go To Statement Considered Harmful',
+    );
+  });
+});
 
 describe('addition of a new blog', () => {
   test('a valid blog can be added', async () => {
-
     const { body } = await api.post('/api/login')
       .send({
         username: 'root',
-        password: 'salainen'
-      })
+        password: 'salainen',
+      });
     const newBlog = {
       title: 'First class tests',
       author: 'Robert C. Martin',
@@ -104,8 +103,8 @@ describe('addition of a new blog', () => {
     const { body } = await api.post('/api/login')
       .send({
         username: 'root',
-        password: 'salainen'
-      })
+        password: 'salainen',
+      });
 
     const newBlog = {
       title: 'First class tests',
@@ -128,8 +127,8 @@ describe('addition of a new blog', () => {
     const { body } = await api.post('/api/login')
       .send({
         username: 'root',
-        password: 'salainen'
-      })
+        password: 'salainen',
+      });
 
     const newBlog = {
       title: '',
@@ -144,51 +143,51 @@ describe('addition of a new blog', () => {
   });
 
   test('adding a new blog will fail if there is no token', async () => {
-    const { body } = await api.post('/api/login')
+    await api.post('/api/login')
       .send({
         username: 'root',
-        password: 'salainen'
-      })
+        password: 'salainen',
+      });
 
     const newBlog = {
       title: 'First class tests',
       author: 'Robert C. Martin',
       url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll',
-      likes: 5
+      likes: 5,
     };
     await api.post('/api/blogs')
       .send(newBlog)
-      .set('Authorization', `Bearer `)
+      .set('Authorization', 'Bearer ')
       .expect(401);
   });
-})
+});
 
 describe('deletion of a blog', () => {
   test('a valid blog can be deleted', async () => {
     const { body } = await api.post('/api/login')
       .send({
         username: 'root',
-        password: 'salainen'
-      })
+        password: 'salainen',
+      });
 
     let blogsAtEnd = await helper.blogsInDb();
     const blogsId = blogsAtEnd.map((b) => b.id);
 
-    const toBeDeleted = blogsId[0]
+    const toBeDeleted = blogsId[0];
 
     await api
       .delete(`/api/blogs/${toBeDeleted}`)
       .set('Authorization', `Bearer ${body.token}`)
-      .expect(204)
+      .expect(204);
 
     blogsAtEnd = await helper.blogsInDb();
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1);
 
     expect(blogsId).toContain(
-      toBeDeleted
+      toBeDeleted,
     );
   });
-})
+});
 
 describe('updating a blog', () => {
   test('a valid blog can be updated', async () => {
@@ -197,88 +196,90 @@ describe('updating a blog', () => {
       author: 'Tulio Calil',
       url: 'https://tuliocalil.com/',
       likes: 8,
-    }
+    };
 
-    const blogsAtEnd = await helper.blogsInDb()
-    const toBeUpdated = blogsAtEnd.find(b => b)
+    const blogsAtEnd = await helper.blogsInDb();
+    const toBeUpdated = blogsAtEnd.find((b) => b);
 
     const { body: result } = await api.put(`/api/blogs/${toBeUpdated.id}`).send(blog).expect(200);
 
-    expect({ title: result.title, author: result.author, url: result.url, likes: result.likes }).toEqual(blog)
+    expect({
+      title: result.title, author: result.author, url: result.url, likes: result.likes,
+    }).toEqual(blog);
   });
-})
+});
 
 describe('when there is initially one user in db', () => {
   beforeEach(async () => {
-    await User.deleteMany({})
+    await User.deleteMany({});
 
-    const passwordHash = await bcrypt.hash('sekret', 10)
-    const user = new User({ username: 'root', passwordHash })
+    const passwordHash = await bcrypt.hash('sekret', 10);
+    const user = new User({ username: 'root', passwordHash });
 
-    await user.save()
-  })
+    await user.save();
+  });
 
   test('creation succeeds with a fresh username', async () => {
-    const usersAtStart = await helper.usersInDb()
+    const usersAtStart = await helper.usersInDb();
 
     const newUser = {
       username: 'mluukkai',
       name: 'Matti Luukkainen',
       password: 'salainen',
-    }
+    };
 
     await api
       .post('/api/users')
       .send(newUser)
       .expect(201)
-      .expect('Content-Type', /application\/json/)
+      .expect('Content-Type', /application\/json/);
 
-    const usersAtEnd = await helper.usersInDb()
-    expect(usersAtEnd).toHaveLength(usersAtStart.length + 1)
+    const usersAtEnd = await helper.usersInDb();
+    expect(usersAtEnd).toHaveLength(usersAtStart.length + 1);
 
-    const usernames = usersAtEnd.map(u => u.username)
-    expect(usernames).toContain(newUser.username)
-  })
+    const usernames = usersAtEnd.map((u) => u.username);
+    expect(usernames).toContain(newUser.username);
+  });
 
   test('the user can\'t be added with username/password invalid', async () => {
-    const usersAtStart = await helper.usersInDb()
+    const usersAtStart = await helper.usersInDb();
 
     const newUser = {
       username: 'ml',
       name: 'Matti Luukkainen',
       password: 'sa',
-    }
+    };
 
     await api
       .post('/api/users')
       .send(newUser)
-      .expect(400)
+      .expect(400);
 
-    const usersAtEnd = await helper.usersInDb()
-    expect(usersAtEnd).toHaveLength(usersAtStart.length)
-  })
+    const usersAtEnd = await helper.usersInDb();
+    expect(usersAtEnd).toHaveLength(usersAtStart.length);
+  });
 
   test('creation fails with proper statuscode and message if username already taken', async () => {
-    const usersAtStart = await helper.usersInDb()
+    const usersAtStart = await helper.usersInDb();
 
     const newUser = {
       username: 'root',
       name: 'Superuser',
       password: 'salainen',
-    }
+    };
 
     const result = await api
       .post('/api/users')
       .send(newUser)
       .expect(400)
-      .expect('Content-Type', /application\/json/)
+      .expect('Content-Type', /application\/json/);
 
-    expect(result.body.error).toContain('expected `username` to be unique')
+    expect(result.body.error).toContain('expected `username` to be unique');
 
-    const usersAtEnd = await helper.usersInDb()
-    expect(usersAtEnd).toEqual(usersAtStart)
-  })
-})
+    const usersAtEnd = await helper.usersInDb();
+    expect(usersAtEnd).toEqual(usersAtStart);
+  });
+});
 
 afterAll(async () => {
   await mongoose.connection.close();
