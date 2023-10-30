@@ -1,5 +1,5 @@
-const User = require('../models/user');
-const Blog = require('../models/blog');
+const User = require('../models/user')
+const Blog = require('../models/blog')
 
 const initialBlogs = [
   {
@@ -14,20 +14,20 @@ const initialBlogs = [
     url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
     likes: 5,
   },
-];
+]
 
 const blogsInDb = async () => {
-  const blogs = await Blog.find({});
-  return blogs.map((blog) => blog.toJSON());
-};
+  const blogs = await Blog.find({})
+  return blogs.map((blog) => blog.toJSON())
+}
 
 const usersInDb = async () => {
-  const users = await User.find({});
-  return users.map((u) => u.toJSON());
-};
+  const users = await User.find({})
+  return users.map((u) => u.toJSON())
+}
 
 module.exports = {
   initialBlogs,
   blogsInDb,
   usersInDb,
-};
+}

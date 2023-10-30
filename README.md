@@ -2,7 +2,6 @@
 
 ![bloglist-api](https://github.com/patrickmps/bloglist/assets/58093259/41c6893e-ffe8-45e2-8ce5-cde5b6433c70)
 
-
 <div align="center">
   
 ![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)
@@ -48,7 +47,6 @@ Inicie o servidor
   npm start
 ```
 
-
 ## Variáveis de Ambiente
 
 Para rodar esse projeto, você vai precisar adicionar as seguintes variáveis de ambiente no seu .env
@@ -61,16 +59,17 @@ Para rodar esse projeto, você vai precisar adicionar as seguintes variáveis de
 
 `SECRET` - string usada para gerar o token JWT
 
-
 ## Documentação da API
 
 ### Blogs
+
 #### Retorna todos os blogs
 
 ```http
   GET /api/blogs
 ```
-+ Response 200 (application/json)
+
+- Response 200 (application/json)
 
       [
         {
@@ -106,22 +105,22 @@ Para rodar esse projeto, você vai precisar adicionar as seguintes variáveis de
   POST /api/blogs
 ```
 
-+ Request (application/json)
+- Request (application/json)
 
-    + Headers
+  - Headers
 
-            Authorization: Bearer [access_token]
+          Authorization: Bearer [access_token]
 
-    + Body
+  - Body
 
-          {
-            "title": "Tulio Calil Dev",
-            "author": "Tulio Calil",
-            "url": "https://tuliocalil.com",
-            "likes": 29
-          }
-      
-+ Response 201 (application/json)
+        {
+          "title": "Tulio Calil Dev",
+          "author": "Tulio Calil",
+          "url": "https://tuliocalil.com",
+          "likes": 29
+        }
+
+- Response 201 (application/json)
 
       {
         "title": "Tulio Calil Dev",
@@ -131,7 +130,6 @@ Para rodar esse projeto, você vai precisar adicionar as seguintes variáveis de
         "user": "652be8b022111afd709708b5",
         "id": "652d7c3d3839ac5b34e1d3ad"
       }
-      
 
 #### Retorna um blog
 
@@ -139,12 +137,12 @@ Para rodar esse projeto, você vai precisar adicionar as seguintes variáveis de
   GET /api/blogs/${id}
 ```
 
-| Parâmetro   | Tipo       | Descrição                                   |
-| :---------- | :--------- | :------------------------------------------ |
+| Parâmetro | Tipo     | Descrição                                   |
+| :-------- | :------- | :------------------------------------------ |
 | `id`      | `string` | **Obrigatório**. O ID do blog que você quer |
-   
-+ Response 200 (application/json)
-  
+
+- Response 200 (application/json)
+
       {
         "title": "Tulio Calil Dev",
         "author": "Tulio Calil",
@@ -160,21 +158,21 @@ Para rodar esse projeto, você vai precisar adicionar as seguintes variáveis de
   PUT /api/blogs/${id}
 ```
 
-| Parâmetro   | Tipo       | Descrição                                   |
-| :---------- | :--------- | :------------------------------------------ |
+| Parâmetro | Tipo     | Descrição                                   |
+| :-------- | :------- | :------------------------------------------ |
 | `id`      | `string` | **Obrigatório**. O ID do blog que você quer |
 
-+ Request (application/json)
+- Request (application/json)
 
-    + Body
+  - Body
 
-          {
-            "likes": 35
-          }  
-      
-+ Response 200 (application/json)
+        {
+          "likes": 35
+        }
 
-      {  
+- Response 200 (application/json)
+
+      {
         "title": "Tulio Calil Dev",
         "author": "Tulio Calil",
         "url": "https://tuliocalil.com",
@@ -182,7 +180,6 @@ Para rodar esse projeto, você vai precisar adicionar as seguintes variáveis de
         "user": "652be8b022111afd709708b5",
         "id": "652d7c3d3839ac5b34e1d3ad"
       }
-      
 
 #### Deleta um blog
 
@@ -190,27 +187,29 @@ Para rodar esse projeto, você vai precisar adicionar as seguintes variáveis de
   DEL /api/blogs/${id}
 ```
 
-| Parâmetro   | Tipo       | Descrição                                   |
-| :---------- | :--------- | :------------------------------------------ |
+| Parâmetro | Tipo     | Descrição                                   |
+| :-------- | :------- | :------------------------------------------ |
 | `id`      | `string` | **Obrigatório**. O ID do blog que você quer |
 
 **Obs.:** para deletar um blog é preciso ser o usuário que o adicionou.
 
-+ Request (application/json)
+- Request (application/json)
 
-    + Headers
+  - Headers
 
-            Authorization: Bearer [access_token]
+          Authorization: Bearer [access_token]
 
-+ Response 204
+- Response 204
 
 ### Users
+
 #### Retorna todos os usuários
 
 ```http
   GET /api/users
 ```
-+ Response 200 (application/json)
+
+- Response 200 (application/json)
 
       [
         {
@@ -240,17 +239,17 @@ Para rodar esse projeto, você vai precisar adicionar as seguintes variáveis de
   POST /api/users
 ```
 
-+ Request (application/json)
+- Request (application/json)
 
-    + Body
+  - Body
 
-          {
-          	"username": "patrickmps",
-          	"name": "Patrick Mota",
-          	"password": "senha321"
-          }
-      
-+ Response 201 (application/json)
+        {
+        	"username": "patrickmps",
+        	"name": "Patrick Mota",
+        	"password": "senha321"
+        }
+
+- Response 201 (application/json)
 
       {
       	"username": "patrickmps",
@@ -259,23 +258,24 @@ Para rodar esse projeto, você vai precisar adicionar as seguintes variáveis de
       	"id": "652d88d5b79d74c37e6ce558"
       }
 
-### Login  
+### Login
+
 #### Faz login na api
 
 ```http
   POST /api/login
 ```
 
-+ Request (application/json)
+- Request (application/json)
 
-    + Body
+  - Body
 
-          {
-          	"username": "patrickmps",
-          	"password": "senha321"
-          }
-      
-+ Response 201 (application/json)
+        {
+        	"username": "patrickmps",
+        	"password": "senha321"
+        }
+
+- Response 201 (application/json)
 
       {
       	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImthbGlsMzIiLCJpZCI6IjY1MmJlOGIwMjIxMTFhZmQ3MDk3MDhiNSIsImlhdCI6MTY5NzQ3OTYyMSwiZXhwIjoxNjk3NDgzMjIxfQ.xkOd_EdpfdIs_cbNJInwEWmrPKauLCOznyYL8zFnSII",
@@ -283,7 +283,6 @@ Para rodar esse projeto, você vai precisar adicionar as seguintes variáveis de
       	"name": "Patrick Mota"
       }
 
-  
 ## Rodando os testes
 
 Para rodar os testes, rode o seguinte comando
@@ -292,8 +291,6 @@ Para rodar os testes, rode o seguinte comando
   npm run test
 ```
 
-
 ## Licença
 
 [MIT](https://choosealicense.com/licenses/mit/)
-

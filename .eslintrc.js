@@ -1,29 +1,27 @@
 module.exports = {
-  env: {
-    browser: true,
-    commonjs: true,
-    es2021: true,
-    jest: true,
-  },
-  extends: 'airbnb-base',
-  overrides: [
-    {
-      env: {
+    env: {
         node: true,
-      },
-      files: [
-        '.eslintrc.{js,cjs}',
-      ],
-      parserOptions: {
-        sourceType: 'script',
-      },
+        commonjs: true,
+        es2021: true,
+        jest: true,
     },
-  ],
-  parserOptions: {
-    ecmaVersion: 'latest',
-  },
-  rules: {
-    'linebreak-style': ['error', 'windows'],
-    'no-console': 0,
-  },
+    extends: ['airbnb-base', 'eslint:recommended', 'prettier'],
+    overrides: [
+        {
+            env: {
+                node: true,
+            },
+            files: ['.eslintrc.{js,cjs}'],
+            parserOptions: {
+                sourceType: 'script',
+            },
+        },
+    ],
+    parserOptions: {
+        ecmaVersion: 'latest',
+    },
+    rules: {
+        // 'linebreak-style': ['error', 'windows'],
+        'no-console': 0,
+    },
 };
